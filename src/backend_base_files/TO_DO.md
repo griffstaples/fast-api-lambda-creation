@@ -12,3 +12,10 @@ After running the backend creation script, there are a few more steps before you
     * update project routes as needed
 
 2. Deploy your app using `serverless deploy`
+
+3. Commit your changes and push them to main:
+```bash
+git add -A
+git commit -m "create repo"
+git push origin main
+```
