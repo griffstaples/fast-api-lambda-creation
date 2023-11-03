@@ -35,7 +35,7 @@ cd $PROJECT_FULL_PATH
 git init
 
 # create github dir for it
-# gh repo create $PROJECT_NAME --private --source=. --remote=origin
+gh repo create $PROJECT_NAME --private --source=. --remote=origin
 
 # copy all files necessary files for it to work
 echo "Copying files started"
