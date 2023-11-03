@@ -1,0 +1,57 @@
+service: test-proj
+
+useDotenv: true
+
+package:
+  individually: true
+  patterns:
+    - "!requirements.txt"
+    - "!package.json"
+    - "!package-lock.json"
+    - "!.serverless/**"
+    - "!venv/**"
+    - "!.env"
+    - "!node_modules/**"
+    - "!.vscode/**"
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  corsSettings:
+    origin: "*"
+    headers:
+      - "*"
+    allowCredentials: false
+  pythonRequirements:
+    dockerizePip: true
+    useDownloadCache: false
+    fileName: ./requirements.txt
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: us-west-2
+  stage: ${opt:stage, "prod"}
+  timeout: 30
+  environment:
+    STAGE: ${self:provider.stage}
+    PROJ_AWS_REGION: ${env:PROJ_AWS_REGION}
+
+functions:
+  test-api:
+    handler: main.handler
+    events:
+      - http:
+          path: /
+          method: get
+          cors: ${self:custom.corsSettings}
+      - http:
+          path: /search/{word}
+          method: get
+          cors: ${self:custom.corsSettings}
+          request:
+            parameters:
+              paths:
+                word: true
+  
